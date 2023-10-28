@@ -166,3 +166,99 @@ export class Teacher extends Person {
 
 ```
 
+
+# Relation
+
+
+## ONE TO ONE
+
+하나의 테이블이 다른 하나의 테이블과 관계를 맺는 구조
+
+### 예시. User & Table Entity
+
+```ts
+
+@Entity()
+export class User {
+
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
+
+}
+
+@Entity()
+export class Profile {
+
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @OneToOne(() => User, (user) => user.profile)
+  @JoinColumn()
+  user: User;
+
+}
+
+```
+
+###  `@OneToOne`
+
+테이블을 서로 매핑하는 데코레이터
+
+### `@JoinColumn`
+
+일대일 관계에서 관계의 **소유자** 측을 지정하는 데 사용되는 데코레이터.
+위 예제에서는 `user`와 `profile` 관계에서 `user` 프로퍼티에 `@JoinColumn` 데코레이터를 사용함으로서 `user` 테이블이 소유자측임을 나타내고 있다.
+
+
+
+## OneToMany, ManyToOne
+
+
+`@OneToMany` 관계는 **One**의 입장에서 본 관계로, 하나가 다수를 소유하는 관계이다.
+`@ManyToOne` 관계는 **Many**의 입장에서 본 관계로, 다수가 하나를 가리키는 관계이다.
+
+
+### <>To<>가 결정되는 과정
+
+1. 유저는 자신의 레코드에 **하나 이상의 포스트를 가질 수 있기에** 유저가 바라보는 포스트와의 관계는 <>To**Many** 관계가 된다.
+2. 포스트는 자신의 레코드에 **하나를 초과한 유저를 가질 수 없기에** 포스트가 바라보는 유저와의 관계는 <>To**One** 관계가 된다.
+3. (하나의 유저가 여러개의 포스트를 가질 수 있음을 확인하였기에) 포스트의 관점에서 유저와의 관계는 ManyToOne 관계가 된다.
+4. (하나의 포스트가 여러개의 유저를 가질 수 없음을 확인하였기에) 유저의 관점에서 포스트와의 관계는 OneToMany 관계가 된다.
+
+1번의 조건으로 바로 OneToMany 관계라고 말할 수 없는 것은 다른 유저 레코드가 자신과 같은 포스트를 가질 수 있는지 확인할 수 없기 때문이다.
+
+관계를 확정하였다면,
+
+1. `One`의 레코드에 `@OneToMany` 데코레이터를 사용한다. 이때 데코레이터를 받는 프로퍼티는 레코드가 소유하는 `Many`를 가르킬 수 있어야 한다.(posts)
+2. `Many`가 되는 레코드에 `@ManyToOne` 데코레이터를 사용한다. 이때 데코레이터를 받는 프로퍼티는 자신을 소유하는 `One`을 가르킬 수 있어야 한다.(author)
+3. 사용한 데코레이터의 첫 번째 인수로 프로퍼티가 어떤 타입을 갖는지 입력하고 두 번째 인수로는 서로를 가리키는 프로퍼티명을 입력한다.
+
+
+```ts
+
+@Entity()
+export class User {
+
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts: Post[];
+
+}
+
+@Entity()
+export class Post {
+  
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @ManyToOne(() => User, (user) => user.posts)
+  author: User;
+}
+
+```
+

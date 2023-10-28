@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm";
+import { Profile } from "./profile.entity";
+import { Post } from "./post.entity";
 
 
 export enum Role {
@@ -41,4 +43,12 @@ export class User {
   @Column()
   @Generated('uuid') //uuid가 자동으로 입력됨
   uuid : number;
+
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts: Post[];
+
+
 }

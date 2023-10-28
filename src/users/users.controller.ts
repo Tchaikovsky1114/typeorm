@@ -12,9 +12,33 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Post('/profile')
+   createUserAndProfile(){
+    return this.usersService.createUserAndProfile(); 
+  }
+
   @Get()
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @Post('posts')
+  createPosts() {
+    return this.usersService.createPostAndTags();
+  }
+
+  @Post('tags')
+  createPostsTags(){
+    return this.usersService.createPostAndTags();
+  }
+
+  @Get('tags')
+  getTags() {
+    return this.usersService.findTags();
+  }
+  @Get('posts')
+  getPosts() {
+    return this.usersService.findPosts();
   }
 
   @Get(':id')
