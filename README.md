@@ -166,6 +166,11 @@ export class Teacher extends Person {
 
 ```
 
+___
+
+</br>
+</br>
+</br>
 
 # Relation
 
@@ -203,22 +208,25 @@ export class Profile {
 
 ```
 
-###  `@OneToOne`
+### `@OneToOne`
 
-테이블을 서로 매핑하는 데코레이터
+- 테이블을 서로 매핑하는 데코레이터
 
 ### `@JoinColumn`
 
-일대일 관계에서 관계의 **소유자** 측을 지정하는 데 사용되는 데코레이터.
-위 예제에서는 `user`와 `profile` 관계에서 `user` 프로퍼티에 `@JoinColumn` 데코레이터를 사용함으로서 `user` 테이블이 소유자측임을 나타내고 있다.
+- 일대일 관계에서 관계의 **소유자** 측을 지정하는 데 사용되는 데코레이터.
+- 위 예제에서는 `user`와 `profile` 관계에서 `user` 프로퍼티에 `@JoinColumn` 데코레이터를 사용함으로서 `user` 테이블이 소유자측임을 나타내고 있다.
 
+
+</br>
+</br>
+</br>
 
 
 ## OneToMany, ManyToOne
 
-
-`@OneToMany` 관계는 **One**의 입장에서 본 관계로, 하나가 다수를 소유하는 관계이다.
-`@ManyToOne` 관계는 **Many**의 입장에서 본 관계로, 다수가 하나를 가리키는 관계이다.
+- `@OneToMany` 관계는 **One**의 입장에서 본 관계로, 하나가 다수를 소유하는 관계이다.
+- `@ManyToOne` 관계는 **Many**의 입장에서 본 관계로, 다수가 하나를 가리키는 관계이다.
 
 
 ### <>To<>가 결정되는 과정
@@ -262,3 +270,46 @@ export class Post {
 
 ```
 
+</br>
+</br>
+</br>
+
+## ManyToMany
+
+관계를 맺는 레코드가 서로의 레코드를 다수로 가질 수 있는 관계를 말한다.
+ManyToMany의 관계에서는 중개테이블을 생성해야 하지만 TypeORM의 도움으로 `@JoinTable` 데코레이션으로 쉽게 구현할 수 있다.
+
+
+### 예시. Post와 Tag
+
+여기서도 위에서 사용한 <>TO<>가 결정되는 과정 알고리즘을 사용한다.
+
+1. 포스트는 자신의 레코드에 **하나 이상의 태그를 가질 수 있기에** 포스트가 바라보는 테그와의 관계는 <>To**Many** 관계가 된다.
+2. 테그는 자신의 레코드에 **하나를 초과한 포스트를 가질 수 있기에** 테그가 바라보는 포스트와의 관계는 <>To**Many** 관계가 된다.
+3. (하나의 테그가 여러개의 포스트를 가질 수 있음을 확인하였기에) 테그의 관점에서 포스트와의 관계는 ManyToMany 관계가 된다.
+4. (하나의 포스트가 여러개의 태그를 가질 수 있음을 확인하였기에) 포스트의 관점에서 테그와의 관계는 ManyToMany 관계가 된다.
+
+
+
+```ts
+@Entity()
+export class Post {
+  
+  @ManyToMany(() => Tag, (tag) => tag.posts)
+  @JoinTable()
+  tags: Tag[];
+}
+
+
+@Entity()
+export class Tag {
+
+  @ManyToMany(() => Post, (post) => post.tags)
+  posts: Post[]
+}
+
+```
+
+### `@JoinTable`
+
+ManyToMany 관계를 설정할 때 관련 엔티티 간의 연결 테이블을 정의하는 데 사용된다.
