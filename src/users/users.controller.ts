@@ -65,5 +65,8 @@ export class UsersController {
     return this.usersService.createManyUser();
   }
 
-
+  @Post('sample')
+  sample(){
+    return this.usersService.createSample();
+  }
 }

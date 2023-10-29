@@ -449,40 +449,39 @@ FindManyOptions는 FineOneOptions를 상속받는다.
 특정 조건을 만족하는 값을 찾기 위한 도움을 주는 유틸리티를 의미한다.
 
 ```ts
-
 this.userRepository.find({
       where: {
         아닌 경우 가져오기
         id: Not(1),
-        
-        
-        id: LessThan(30), LessThanOrEqual(30), MoreThan(30), MoreThanOrEqual(30)
-
-        
-        email: Like('%gmail%')
-
-        유사값. 대소문자를 구분하지 않는다
-        email: ILike('%GmAiL%')
-
-        사이값
-        id: Between(10, 15)
-
-        해당되는 여러개의 값
-        id: In([1,3,5,7,99])
-
-        해당 프로퍼티가 null인 경우 가져온다
+        id: LessThan(30), LessThanOrEqual(30), MoreThan(30), MoreThanOrEqual(30),
+        email: Like('%gmail%'),
+        email: ILike('%GmAiL%'),
+        id: Between(10, 15),
+        id: In([1,3,5,7,99]),
         id: IsNull()
-        
       }
     })
-
 ```
 
-`Not`: 인자에 들어오는 값이 아닌 레코드를 찾아 반환한다
-`LessThan`, `LessThanOrEqual`, `MoreThan`, `MoreThanOrEqual`: `<` , `<=`, `>` , `>=`
-`Like`: 유사값. 찾고자 하는 값을 기준으로 퍼센트를 위치시킨다. 퍼센트는 해당 위치에 어떤 값이 있든지 상관하지 않고 조건에 맞는 값을 반환한다
-`ILike`: `Like`와 같으나 대소문자를 가리지 않는다
-`Between`: 사이값을 반환한다
-`In`: 인자로 배열을 받으며 배열 내 값을 반환한다
-`IsNull`: IsNull
+`Not`: 인자에 들어오는 값이 아닌 레코드를 찾아 반환한다.
 
+`LessThan`, `LessThanOrEqual`, `MoreThan`, `MoreThanOrEqual`: `<` , `<=`, `>` , `>=`.
+
+`Like`: 유사값. 찾고자 하는 값을 기준으로 퍼센트를 위치시킨다. 퍼센트는 해당 위치에 어떤 값이 있든지 상관하지 않고 조건에 맞는 값을 반환한다.
+
+`ILike`: `Like`와 같으나 대소문자를 가리지 않는다.
+
+`Between`: 사이값을 반환한다.
+
+`In`: 인자로 배열을 받으며 배열 내 값을 반환한다.
+
+`IsNull`: IsNull.
+
+
+___
+
+<br/>
+<br/>
+<br/>
+
+# 4.Method
