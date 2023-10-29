@@ -426,11 +426,63 @@ FindManyOptions는 FineOneOptions를 상속받는다.
     })
 ```
 `select`: 정의된 프로퍼티들만 가져오는데, 릴레이션된 레코드를 입력하여 가져올수도 있고, 또 릴레이션된 레코드 내부의 특정 프로퍼티만 가져올 수도 있다.
+<br/>
+<br/>
 `where`:ANDwhere와 ORwhere가 존재한다.
   1. AND는 `{}`로 묶는다
   2. OR은 `[]`로 묶는다.
   3. 만약 릴레이션된 레코드가 존재한다면 관계를 맺는 테이블을 where절 안에 넣어 필터링 할 수 있다.
 
 `order`: 정렬순서를 정할 수 있다.
+<br/>
+
 `skip`: 반환하는 값의 첫 인덱스부터 입력한 숫자만큼 제외하여 반환한다.
+<br/>
+
 `take`: 반환하는 값의 첫 인덱스부터 입력한 숫자만큼 가져온다.
+<br/>
+
+<br/><br/><br/>
+
+## FindOperator
+
+특정 조건을 만족하는 값을 찾기 위한 도움을 주는 유틸리티를 의미한다.
+
+```ts
+
+this.userRepository.find({
+      where: {
+        아닌 경우 가져오기
+        id: Not(1),
+        
+        
+        id: LessThan(30), LessThanOrEqual(30), MoreThan(30), MoreThanOrEqual(30)
+
+        
+        email: Like('%gmail%')
+
+        유사값. 대소문자를 구분하지 않는다
+        email: ILike('%GmAiL%')
+
+        사이값
+        id: Between(10, 15)
+
+        해당되는 여러개의 값
+        id: In([1,3,5,7,99])
+
+        해당 프로퍼티가 null인 경우 가져온다
+        id: IsNull()
+        
+      }
+    })
+
+```
+
+`Not`: 인자에 들어오는 값이 아닌 레코드를 찾아 반환한다
+`LessThan`, `LessThanOrEqual`, `MoreThan`, `MoreThanOrEqual`: `<` , `<=`, `>` , `>=`
+`Like`: 유사값. 찾고자 하는 값을 기준으로 퍼센트를 위치시킨다. 퍼센트는 해당 위치에 어떤 값이 있든지 상관하지 않고 조건에 맞는 값을 반환한다
+`ILike`: `Like`와 같으나 대소문자를 가리지 않는다
+`Between`: 사이값을 반환한다
+`In`: 인자로 배열을 받으며 배열 내 값을 반환한다
+`IsNull`: IsNull
+

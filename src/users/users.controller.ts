@@ -21,6 +21,10 @@ export class UsersController {
   findAll() {
     return this.usersService.findAll();
   }
+  @Get('/manyusers')
+  getManyUsers() {
+    return this.usersService.getManyUsers();
+  }
 
   @Post('posts')
   createPosts() {
@@ -55,4 +59,11 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
+
+  @Post('manyusers')
+  createManyUser() {
+    return this.usersService.createManyUser();
+  }
+
+
 }
