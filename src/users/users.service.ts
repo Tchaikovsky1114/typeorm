@@ -27,11 +27,14 @@ export class UsersService {
     const user = await this.userRepository.save({
       email: 'erems@gmail.com',
       password:'mypassword',
+      profile: {
+        profileImg: 'asdf.png'
+      }
     })
-    const profile = await this.profileRepository.save({
-      profileImg:'helloworld.png',
-      user
-    })
+    // const profile = await this.profileRepository.save({
+    //   profileImg:'helloworld.png',
+    //   user
+    // })
     return user
   }
 
@@ -69,11 +72,7 @@ export class UsersService {
   }
 
   findAll() {
-    return this.userRepository.find({
-      relations: {
-        profile: true
-      }
-    });
+    return this.userRepository.find();
   }
 
   findOne(id: number) {
@@ -94,5 +93,59 @@ export class UsersService {
 
   remove(id: number) {
     return this.userRepository.delete(id);
+  }
+
+
+  // 어떤 프로퍼티를 선택할 지 정의
+
+  getUsers() {
+    
+    this.userRepository.find({
+      // select를 정의하면 정의된 프로퍼티들만 가져온다
+      // select: {
+      //     email:true,
+      //     createdAt:true,
+
+          // 릴레이션된 레코드에서 특정 컬럼만 가져올 수 있음
+            // id: true
+          // profile: {
+            
+          // }
+      // },
+      
+      // 필터링 조건 입력, where는 전부 AND 조건으로 묶인다.
+      // where: {
+      //   id:3,
+      // },
+
+      // OR 조건으로 가져오기 위해서는 객체가 아닌 배열로 묶는다.
+      // where: [
+      //   {
+      //     id: 1
+      //   },
+      //   {
+      //     version: 1
+      //   }
+      // ]
+
+      // relation 된 테이블에서 where를 통해 필터를 걸 수 있다.
+      // where: {
+      //   profile: {
+      //     id: 3
+      //   }
+      // }
+      // 정렬순서를 정할 수 있다.
+      // order: {
+      //   id: 'ASC'
+      // }
+
+      // 반환하는 값에서 number만큼 제외하고 반환한다
+      // skip: 5
+      
+      // 반환하는 값에서 number만큼 가져온다
+      // take: 1
+    }
+    )
+    
   }
 }

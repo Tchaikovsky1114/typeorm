@@ -313,3 +313,94 @@ export class Tag {
 ### `@JoinTable`
 
 ManyToMany 관계를 설정할 때 관련 엔티티 간의 연결 테이블을 정의하는 데 사용된다.
+
+
+___
+
+## Relation Options 
+
+옵션은 OneToOne, OneToMany, ManyToOne, ManyToMany 모두 같은 옵션을 사용한다.
+
+```ts
+@OneToOne(
+  () => Foo,
+  (foo) => foo.bar,
+  {
+    eager: true,
+    cascade: false,
+    nullable: true,
+    onDelete: 'CASCADE'
+  })
+```
+
+`eager`: `find()` 메서드를 호출할 때마다 연결되어 있는 relation을 모두 가져온다.
+`cascade`: `save()`를 호출할 때 relation을 같이 생성하여 저장할 수 있게 한다.
+`nullable`: nullable.
+`onDelete`: 해당 로우가 삭제 되었을 때 호출되는 추가 SQL문을 ENUM으로 정의
+  - NOACTION : 아무것도 실행하지 않음
+  - CASCADE: 해당 테이블을 참조하고 있는 ROW도 같이 삭제
+  - SETNULL: 참조하고 있는 ROW에서 해당 테이블 ID를 null로 변경
+  - SETDEFAULT: 테이블의 기본 세팅으로 설정
+  - RESTRICT: 해당 테이블을 참조하고 있는 다른 로우가 있는 경우, 삭제 불가
+
+
+## FindManyOptions
+`find()` 메서드를 사용할 때 인자로 넣을 수 있는 옵션을 뜻한다
+FindManyOptions는 FineOneOptions를 상속받는다.
+
+
+```ts
+  FindManyOptions.d.ts
+  export interface FindManyOptions<Entity = any> extends FindOneOptions<Entity> {
+    skip?: number;
+    take?: number;
+}
+```
+
+  자주 쓰이는 옵션은 다음과 같다.
+
+```ts
+  this.userRepository.find({
+        select: {
+            email:true,
+            createdAt:true,
+            id: true
+            profile: {
+              id: true
+            }
+        },
+        // where 1.
+        where: {
+          id:3,
+        },
+        // where 2.
+        where: [
+          {
+            id: 1
+          },
+          {
+            version: 1
+          }
+        ]
+        // where 3.
+        where: {
+          profile: {
+            id: 3
+          }
+        }
+        order: {
+          id: 'ASC'
+        }
+        skip: 5
+        take: 1
+    })
+```
+`select`: 정의된 프로퍼티들만 가져오는데, 릴레이션된 레코드를 입력하여 가져올수도 있고, 또 릴레이션된 레코드 내부의 특정 프로퍼티만 가져올 수도 있다.
+`where`:ANDwhere와 ORwhere가 존재한다.
+  1. AND는 `{}`로 묶는다
+  2. OR은 `[]`로 묶는다.
+  3. 만약 릴레이션된 레코드가 존재한다면 관계를 맺는 테이블을 where절 안에 넣어 필터링 할 수 있다.
+
+`order`: 정렬순서를 정할 수 있다.
+`skip`: 반환하는 값의 첫 인덱스부터 입력한 숫자만큼 제외하여 반환한다.
+`take`: 반환하는 값의 첫 인덱스부터 입력한 숫자만큼 가져온다.
