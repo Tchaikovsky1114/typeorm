@@ -14,6 +14,8 @@ ___
 
 - PrimaryColumn은 직접 값을 넣어주어야 한다.
 
+<br/>
+<br/>
 
 ### PrimaryGeneratedColumn은 uuid로 생성할 수 있다.
 `PrimaryGeneratedColumn('uuid')`
@@ -342,7 +344,10 @@ ManyToMany 관계를 설정할 때 관련 엔티티 간의 연결 테이블을 �
 
 ___
 
-## Relation Options 
+<br/>
+<br/>
+
+# Relation Options 
 
 옵션은 OneToOne, OneToMany, ManyToOne, ManyToMany 모두 같은 옵션을 사용한다.
 
@@ -389,7 +394,7 @@ FindManyOptions는 FineOneOptions를 상속받는다.
         select: {
             email:true,
             createdAt:true,
-            id: true
+            id: true,
             profile: {
               id: true
             }
@@ -416,7 +421,7 @@ FindManyOptions는 FineOneOptions를 상속받는다.
         order: {
           id: 'ASC'
         }
-        skip: 5
+        skip: 5,
         take: 1
     })
 ```
