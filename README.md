@@ -411,16 +411,16 @@ FindManyOptions는 FineOneOptions를 상속받는다.
           {
             version: 1
           }
-        ]
+        ],
         // where 3.
         where: {
           profile: {
             id: 3
           }
-        }
+        },
         order: {
           id: 'ASC'
-        }
+        },
         skip: 5,
         take: 1
     })
